@@ -4,13 +4,14 @@ import { BaseSkeleton } from '../base-skeleton/base-skeleton';
 import styles from './base-card.module.scss';
 
 export interface BaseCardProps {
-  children: ReactNode;
+  children?: ReactNode;
+  variant?: 'default' | 'subtle';
   isLoading?: boolean;
 }
 
-export function BaseCard({ children, isLoading }: BaseCardProps) {
+export function BaseCard({ children, variant = 'default', isLoading }: BaseCardProps) {
   return (
-    <Paper className={styles.card} shadow="xs">
+    <Paper className={`${styles.card} ${styles[variant]}`} shadow={variant === 'default' ? 'xs' : undefined}>
       {isLoading ? <BaseSkeleton rows={3} /> : children}
     </Paper>
   );
