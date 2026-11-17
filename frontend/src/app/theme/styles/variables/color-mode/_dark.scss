@@ -1,0 +1,20 @@
+:root[data-mantine-color-scheme='dark'] {
+  --Text-High-emphasis: var(--Colors-Alpha-White-100);
+  --Text-Medium-emphasis: var(--Colors-Alpha-White-80);
+  --Text-Low-emphasis: var(--Colors-Alpha-White-68);
+  --Text-Fixed-White-High-emphasis: var(--Colors-Alpha-White-100);
+  --Text-Primary-Default: var(--Colors-Primary-400);
+  --Text-Semantic-Negative-Default: var(--Colors-Semantic-Negative-200);
+
+  --Background-Base-Primary: var(--Colors-Neutral-1000);
+  --Background-Base-Secondary-Default: var(--Colors-Neutral-800);
+  --Background-Base-Secondary-Hover: var(--Colors-Neutral-600);
+  --Background-Primary-Default: var(--Colors-Primary-600);
+  --Background-Primary-Hover: var(--Colors-Primary-500);
+  --Background-Primary-Pressed: var(--Colors-Primary-400);
+  --Background-Primary-Disabled: var(--Colors-Primary-1000);
+
+  --Border-Low-emphasis: var(--Colors-Alpha-White-10);
+  --Border-Medium-emphasis: var(--Colors-Alpha-White-20);
+  --Border-Primary-Default: var(--Colors-Primary-400);
+}
