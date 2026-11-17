@@ -1,0 +1,9 @@
+@use 'sass:math';
+
+@function auto-spacing-value($size) {
+  @return clamp(#{$size * 0.75}px, #{math.div($size, 14.4)}vw, #{$size * 1.5}px);
+}
+
+@mixin auto-spacing($property, $size) {
+  #{$property}: auto-spacing-value($size);
+}

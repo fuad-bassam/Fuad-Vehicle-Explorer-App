@@ -1,0 +1,20 @@
+@use 'sass:map';
+
+$font-sizes: (
+  'title': (
+    'large': 22,
+    'medium': 18
+  ),
+  'body': (
+    'large': 16,
+    'medium': 14
+  ),
+  'label': (
+    'large': 14,
+    'medium': 12
+  )
+);
+
+@mixin font-size($type, $variant) {
+  font-size: #{map.get($font-sizes, $type, $variant)}px;
+}
