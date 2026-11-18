@@ -4,5 +4,6 @@ export const emptyExplorerData: IVehicleExplorerData = {
   make: null,
   vehicleTypes: [],
   models: [],
+  makesPage: null,
   error: null
 };

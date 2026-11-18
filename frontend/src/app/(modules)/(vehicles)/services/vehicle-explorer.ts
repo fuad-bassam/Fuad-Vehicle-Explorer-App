@@ -1,8 +1,9 @@
 import type { IApiResponse } from '@/services/core/models/service-operation-result';
-import { getMake, getModels, getVehicleTypes } from '@/services/vehicles/vehicles';
+import { getMake, getMakesPage, getModels, getVehicleTypes } from '@/services/vehicles/vehicles';
 import type { IVehicleExplorerData, IVehicleExplorerError } from '../models/vehicle-explorer-data';
 import type { IVehicleFilters } from '../models/vehicle-filters';
 import { emptyExplorerData } from '../store/empty-explorer-data';
+import { pageSize } from '../store/paging-options';
 
 const toError = (response: IApiResponse<unknown>): IVehicleExplorerError => ({
   message: response.errors.join(' '),
@@ -11,7 +12,13 @@ const toError = (response: IApiResponse<unknown>): IVehicleExplorerError => ({
 
 export async function loadVehicleExplorer(filters: IVehicleFilters): Promise<IVehicleExplorerData> {
   if (!filters.makeId) {
-    return emptyExplorerData;
+    const makesPage = await getMakesPage(filters.page, pageSize);
+
+    return {
+      ...emptyExplorerData,
+      makesPage: makesPage.result,
+      error: makesPage.isSuccessful ? null : toError(makesPage)
+    };
   }
 
   const [make, vehicleTypes, models] = await Promise.all([
@@ -26,6 +33,7 @@ export async function loadVehicleExplorer(filters: IVehicleFilters): Promise<IVe
     make: make.result,
     vehicleTypes: vehicleTypes.result ?? [],
     models: models?.result ?? [],
+    makesPage: null,
     error: failed ? toError(failed) : null
   };
 }

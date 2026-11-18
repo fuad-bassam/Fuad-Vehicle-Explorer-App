@@ -2,6 +2,7 @@
 
 import { Table } from '@mantine/core';
 import { BaseSkeleton } from '../base-skeleton/base-skeleton';
+import styles from './base-table.module.scss';
 
 export interface BaseTableColumn<T> {
   key: keyof T;
@@ -13,11 +14,12 @@ export interface BaseTableProps<T> {
   rows: T[];
   rowKey: keyof T;
   isLoading?: boolean;
+  onRowClick?: (row: T) => void;
 }
 
 const loadingRowCount = 5;
 
-export function BaseTable<T>({ columns, rows, rowKey, isLoading }: BaseTableProps<T>) {
+export function BaseTable<T>({ columns, rows, rowKey, isLoading, onRowClick }: BaseTableProps<T>) {
   return (
     <Table striped highlightOnHover>
       <Table.Thead>
@@ -39,7 +41,11 @@ export function BaseTable<T>({ columns, rows, rowKey, isLoading }: BaseTableProp
               </Table.Tr>
             ))
           : rows.map(row => (
-              <Table.Tr key={String(row[rowKey])}>
+              <Table.Tr
+                key={String(row[rowKey])}
+                className={onRowClick ? styles.clickable : undefined}
+                onClick={onRowClick ? () => onRowClick(row) : undefined}
+              >
                 {columns.map(column => (
                   <Table.Td key={String(column.key)}>{String(row[column.key])}</Table.Td>
                 ))}

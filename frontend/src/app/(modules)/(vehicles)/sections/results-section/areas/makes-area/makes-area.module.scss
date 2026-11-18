@@ -1,0 +1,7 @@
+@use '../../../../../../theme/styles/layout' as *;
+
+.area {
+  @include auto-spacing('gap', 12);
+  display: flex;
+  flex-direction: column;
+}

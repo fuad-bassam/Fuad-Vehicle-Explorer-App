@@ -1,0 +1,7 @@
+@use '../../styles/layout' as *;
+
+.pagination {
+  @include auto-spacing('padding-top', 8);
+  display: flex;
+  justify-content: center;
+}

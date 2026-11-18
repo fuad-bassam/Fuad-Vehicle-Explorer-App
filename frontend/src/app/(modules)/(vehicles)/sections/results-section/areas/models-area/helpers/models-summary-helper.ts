@@ -16,15 +16,3 @@ export const buildNoModelsTitle = (makeName: string, year: number, vehicleType: 
   `No ${describeSearch(makeName, year, vehicleType)}`;
 
 export const buildNoMatchTitle = (filterText: string) => `No models match "${filterText.trim()}"`;
-
-export const buildPromptTitle = (hasMake: boolean, hasYear: boolean) => {
-  if (hasMake && !hasYear) {
-    return 'Now pick a model year';
-  }
-
-  if (!hasMake && hasYear) {
-    return 'Now pick a make';
-  }
-
-  return 'Pick a make and a model year';
-};

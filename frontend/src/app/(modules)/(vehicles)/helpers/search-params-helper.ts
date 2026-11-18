@@ -10,12 +10,14 @@ const toPositiveNumber = (value: string | undefined) => {
 };
 
 export const parseVehicleFilters = (params: SearchParams): IVehicleFilters => {
+  const makeId = toPositiveNumber(firstValue(params.makeId));
   const vehicleType = firstValue(params.type)?.trim();
 
   return {
-    makeId: toPositiveNumber(firstValue(params.makeId)),
-    year: toPositiveNumber(firstValue(params.year)),
-    vehicleType: vehicleType ? vehicleType : null
+    makeId,
+    year: makeId ? toPositiveNumber(firstValue(params.year)) : null,
+    vehicleType: makeId && vehicleType ? vehicleType : null,
+    page: makeId ? 1 : (toPositiveNumber(firstValue(params.page)) ?? 1)
   };
 };
 
@@ -34,6 +36,10 @@ export const toQueryString = (filters: IVehicleFilters, viewMode: ViewMode) => {
 
   if (filters.vehicleType) {
     params.set('type', filters.vehicleType);
+  }
+
+  if (!filters.makeId && filters.page > 1) {
+    params.set('page', String(filters.page));
   }
 
   if (viewMode === 'grid') {
