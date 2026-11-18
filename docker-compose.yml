@@ -1,6 +1,6 @@
 services:
   api:
-    image: vehicle-explorer-api:latest
+    image: ghcr.io/fuad-bassam/vehicle-explorer-api:latest
     build:
       context: ./backend
     environment:
@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
 
   web:
-    image: vehicle-explorer-web:latest
+    image: ghcr.io/fuad-bassam/vehicle-explorer-web:latest
     build:
       context: ./frontend
     environment:
