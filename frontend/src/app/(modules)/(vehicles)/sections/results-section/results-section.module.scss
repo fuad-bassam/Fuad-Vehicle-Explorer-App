@@ -1,0 +1,7 @@
+@use '../../../../theme/styles/layout' as *;
+
+.section {
+  @include auto-spacing('gap', 24);
+  display: flex;
+  flex-direction: column;
+}
