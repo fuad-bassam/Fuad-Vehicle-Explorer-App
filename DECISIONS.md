@@ -47,3 +47,7 @@ I used the same layering I use at work, just smaller.
 
 ## How I used AI
 I used Claude Code. First I gave it the context: my architecture for the backend and frontend, the assignment and what I knew about the vPIC API. With that, it helped me write the code one task at a time, and I reviewed and pushed each task myself. At the end I ran my checklist slash commands to check the code against my rules.
+
+What it got wrong:
+- **Over-built the first version**
+- **Wrong fix for the deploy key**
