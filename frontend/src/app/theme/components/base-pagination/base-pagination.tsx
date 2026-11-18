@@ -17,7 +17,16 @@ export function BasePagination({ page, totalPages, onChange, disabled }: BasePag
 
   return (
     <div className={styles.pagination}>
-      <Pagination total={totalPages} value={page} onChange={onChange} disabled={disabled} siblings={1} boundaries={1} size="sm" />
+      <Pagination
+        total={totalPages}
+        value={page}
+        onChange={onChange}
+        disabled={disabled}
+        siblings={1}
+        boundaries={1}
+        size="sm"
+        radius="xl"
+      />
     </div>
   );
 }
