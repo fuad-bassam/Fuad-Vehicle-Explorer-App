@@ -6,7 +6,7 @@ Pick a car make and a model year, then see its vehicle types and models.<br/>
 Data comes from the [NHTSA vPIC API](https://vpic.nhtsa.dot.gov/api/).<br/>
 Architecture and decisions: [DECISIONS.md](DECISIONS.md)
 
-**Live:** http://13.60.186.86/
+**Live:** https://13-60-186-86.sslip.io/
 
 ![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
@@ -33,6 +33,8 @@ App: http://localhost:3000 · Swagger: http://localhost:5080/swagger
 ## Deploy
 
 The app runs on one AWS EC2 instance (free tier) with Docker Compose. Every merge to `main` runs [deploy.yml](.github/workflows/deploy.yml): it builds both images, pushes them to GitHub Container Registry and restarts the app on the server.
+
+On the server, [Caddy](https://caddyserver.com/) sits in front of the web app and serves it over HTTPS with a free certificate. `docker-compose.https.yml` adds it on top of `docker-compose.yml`, so running locally stays plain `docker compose up`.
 
 ## Settings
 

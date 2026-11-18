@@ -43,6 +43,7 @@ I used the same layering I use at work, just smaller.
 - **Guided tour:** driver.js. It shows on the first visit, and the button at the bottom right plays it again.
 - **All years:** with a make but no year, the list shows the make's models from all years. This uses one more vPIC endpoint, `GetModelsForMakeId`.
 - **All makes:** the first screen lists every make, 20 per page, so the page is never empty.
+- **HTTPS:** Caddy in front of the web app on the server, with a free `sslip.io` name and an automatic certificate. It also sets the user's real IP for the rate limit.
 
 ## Trade-offs
 - Filter and sort run in the browser, because vPIC can't do them.
