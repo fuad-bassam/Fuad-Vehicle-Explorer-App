@@ -20,6 +20,7 @@ docker compose up --build
 ```
 
 - Web app: http://localhost:3000
+- API (Swagger): http://localhost:5080/swagger
 - API health check: http://localhost:5080/health
 
 Change the ports with `WEB_PORT` and `API_PORT`, for example `WEB_PORT=8000 docker compose up --build`. Stop with `docker compose down`.

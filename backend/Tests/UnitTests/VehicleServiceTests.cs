@@ -4,6 +4,8 @@ using Core.Settings;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
+using Polly.CircuitBreaker;
+using Polly.Timeout;
 using Services.Vehicles;
 using UnitTests.Fakes;
 
@@ -87,6 +89,26 @@ public class VehicleServiceTests
     public async Task GetVehicleTypes_WhenVpicIsDown_ReturnsUpstreamUnavailable()
     {
         _vpicClient.ExceptionToThrow = new HttpRequestException("vPIC is down");
+
+        var result = await _service.GetVehicleTypesAsync(474, CancellationToken.None);
+
+        Assert.Equal([ErrorCode.UpstreamUnavailable], result.ErrorCodes);
+    }
+
+    [Fact]
+    public async Task GetVehicleTypes_WhenVpicTimesOut_ReturnsUpstreamUnavailable()
+    {
+        _vpicClient.ExceptionToThrow = new TimeoutRejectedException("vPIC timed out");
+
+        var result = await _service.GetVehicleTypesAsync(474, CancellationToken.None);
+
+        Assert.Equal([ErrorCode.UpstreamUnavailable], result.ErrorCodes);
+    }
+
+    [Fact]
+    public async Task GetVehicleTypes_WhenVpicCallsArePaused_ReturnsUpstreamUnavailable()
+    {
+        _vpicClient.ExceptionToThrow = new BrokenCircuitException("vPIC calls are paused");
 
         var result = await _service.GetVehicleTypesAsync(474, CancellationToken.None);
 

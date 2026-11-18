@@ -7,6 +7,7 @@ using Core.Settings;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Polly;
 
 namespace Services.Vehicles;
 
@@ -160,6 +161,10 @@ public class VehicleService(
         catch (TaskCanceledException exception) when (!cancellationToken.IsCancellationRequested)
         {
             logger.LogWarning(exception, "vPIC request timed out");
+        }
+        catch (ExecutionRejectedException exception)
+        {
+            logger.LogWarning(exception, "vPIC calls are paused after too many failures or timeouts");
         }
 
         return ServiceOperationResult<T>.Failure(ErrorCode.UpstreamUnavailable);

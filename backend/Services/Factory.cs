@@ -17,7 +17,8 @@ public static class Factory
 
         services.Configure<VpicOptions>(vpicSection);
         services.AddMemoryCache();
-        services.AddHttpClient<IVpicClient, VpicClient>(client => client.BaseAddress = new Uri(vpicOptions.BaseUrl));
+        services.AddHttpClient<IVpicClient, VpicClient>(client => client.BaseAddress = new Uri(vpicOptions.BaseUrl))
+            .AddStandardResilienceHandler();
         services.AddScoped<IVehicleService, VehicleService>();
 
         return services;
