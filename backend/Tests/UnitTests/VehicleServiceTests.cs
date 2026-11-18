@@ -114,6 +114,16 @@ public class VehicleServiceTests
     }
 
     [Fact]
+    public async Task GetModels_WithoutYear_ReturnsTheModels()
+    {
+        _vpicClient.Models = [new VpicModel { ModelId = 1861, ModelName = "Accord" }];
+
+        var result = await _service.GetModelsAsync(474, null, null, CancellationToken.None);
+
+        Assert.Equal(["Accord"], result.Result!.Select(model => model.Name));
+    }
+
+    [Fact]
     public async Task GetVehicleTypes_WhenVpicIsDown_ReturnsUpstreamUnavailable()
     {
         _vpicClient.ExceptionToThrow = new HttpRequestException("vPIC is down");

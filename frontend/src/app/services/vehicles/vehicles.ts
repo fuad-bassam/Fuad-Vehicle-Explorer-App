@@ -12,5 +12,5 @@ export const getMake = (makeId: number) => apiGet<IMake>(`api/makes/${makeId}`);
 
 export const getVehicleTypes = (makeId: number) => apiGet<IVehicleType[]>(`api/makes/${makeId}/vehicle-types`);
 
-export const getModels = (makeId: number, year: number, vehicleType: string | null) =>
+export const getModels = (makeId: number, year: number | null, vehicleType: string | null) =>
   apiGet<IVehicleModel[]>(`api/makes/${makeId}/models`, { year, vehicleType });

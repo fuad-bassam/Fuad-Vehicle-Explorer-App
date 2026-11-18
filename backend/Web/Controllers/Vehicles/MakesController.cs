@@ -42,7 +42,7 @@ public class MakesController(IVehicleService vehicleService) : ControllerBase
     }
 
     [HttpGet("{makeId}/models")]
-    public async Task<ActionResult<ServiceOperationResult<List<ModelForList>>>> GetModelsAsync(int makeId, int year, string? vehicleType, CancellationToken cancellationToken)
+    public async Task<ActionResult<ServiceOperationResult<List<ModelForList>>>> GetModelsAsync(int makeId, int? year, string? vehicleType, CancellationToken cancellationToken)
     {
         var result = await vehicleService.GetModelsAsync(makeId, year, vehicleType, cancellationToken);
         return ToResponse(result);

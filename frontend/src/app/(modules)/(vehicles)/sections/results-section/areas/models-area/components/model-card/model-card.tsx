@@ -8,7 +8,7 @@ import styles from './model-card.module.scss';
 interface IModelCardProps {
   model: IVehicleModel;
   makeName: string;
-  year: number;
+  year: number | null;
   vehicleType: string | null;
 }
 
@@ -19,7 +19,7 @@ export function ModelCard({ model, makeName, year, vehicleType }: IModelCardProp
         <BaseAvatar name={model.name} text={getInitials(model.name)} size="lg" />
         <div className={styles.details}>
           <BaseTypography text={model.name} type="subtitle" />
-          <BaseTypography text={`${makeName} · ${year}`} color="muted" />
+          <BaseTypography text={year ? `${makeName} · ${year}` : makeName} color="muted" />
           {vehicleType && <BaseTypography text={vehicleType} type="caption" />}
           <BaseTypography text={`vPIC id ${model.id}`} type="caption" color="muted" />
         </div>

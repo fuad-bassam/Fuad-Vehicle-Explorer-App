@@ -41,6 +41,8 @@ I used the same layering I use at work, just smaller.
 - **Rate limit:** 100 calls a minute per user, then 429.
 - **Swagger and Serilog:** to try the API and to read the logs.
 - **Guided tour:** driver.js. It shows on the first visit, and the button at the bottom right plays it again.
+- **All years:** with a make but no year, the list shows the make's models from all years. This uses one more vPIC endpoint, `GetModelsForMakeId`.
+- **All makes:** the first screen lists every make, 20 per page, so the page is never empty.
 
 ## Trade-offs
 - Filter and sort run in the browser, because vPIC can't do them.

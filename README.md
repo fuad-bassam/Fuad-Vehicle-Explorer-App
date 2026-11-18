@@ -54,7 +54,7 @@ The API settings live in `backend/Web/appsettings.json`, and any of them can be 
 | `GET /api/makes/all?page=1&pageSize=20` | All makes, one page at a time |
 | `GET /api/makes/{makeId}` | One make |
 | `GET /api/makes/{makeId}/vehicle-types` | The make's vehicle types |
-| `GET /api/makes/{makeId}/models?year=2015&vehicleType=Truck` | The make's models for that year |
+| `GET /api/makes/{makeId}/models?year=2015&vehicleType=Truck` | The make's models. `year` and `vehicleType` are optional, no year means all years |
 
 Every response has the same shape: `result`, `isSuccessful`, `errorCodes` and `errors`.
 

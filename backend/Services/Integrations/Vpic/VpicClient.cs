@@ -19,9 +19,16 @@ public class VpicClient(HttpClient httpClient) : IVpicClient
         return response?.Results ?? [];
     }
 
-    public async Task<List<VpicModel>> GetModelsAsync(int makeId, int year, string? vehicleType, CancellationToken cancellationToken)
+    public async Task<List<VpicModel>> GetModelsAsync(int makeId, int? year, string? vehicleType, CancellationToken cancellationToken)
     {
-        var url = $"GetModelsForMakeIdYear/makeId/{makeId}/modelyear/{year}";
+        var url = year is null && string.IsNullOrWhiteSpace(vehicleType)
+            ? $"GetModelsForMakeId/{makeId}"
+            : $"GetModelsForMakeIdYear/makeId/{makeId}";
+
+        if (year is not null)
+        {
+            url += $"/modelyear/{year}";
+        }
 
         if (!string.IsNullOrWhiteSpace(vehicleType))
         {

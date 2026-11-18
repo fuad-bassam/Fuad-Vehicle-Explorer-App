@@ -54,8 +54,8 @@ export function ModelsArea() {
     );
   }
 
-  if (!filters.year || !selectedMake) {
-    return <BaseEmptyState title="Now pick a model year" description="Matching vehicle models will appear here." />;
+  if (!selectedMake) {
+    return null;
   }
 
   const year = filters.year;

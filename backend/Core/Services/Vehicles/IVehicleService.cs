@@ -14,5 +14,5 @@ public interface IVehicleService
 
     Task<ServiceOperationResult<List<VehicleTypeForList>>> GetVehicleTypesAsync(int makeId, CancellationToken cancellationToken);
 
-    Task<ServiceOperationResult<List<ModelForList>>> GetModelsAsync(int makeId, int year, string? vehicleType, CancellationToken cancellationToken);
+    Task<ServiceOperationResult<List<ModelForList>>> GetModelsAsync(int makeId, int? year, string? vehicleType, CancellationToken cancellationToken);
 }

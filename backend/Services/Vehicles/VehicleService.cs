@@ -113,7 +113,7 @@ public class VehicleService(
         }, cancellationToken), cancellationToken);
     }
 
-    public async Task<ServiceOperationResult<List<ModelForList>>> GetModelsAsync(int makeId, int year, string? vehicleType, CancellationToken cancellationToken)
+    public async Task<ServiceOperationResult<List<ModelForList>>> GetModelsAsync(int makeId, int? year, string? vehicleType, CancellationToken cancellationToken)
     {
         var errors = new List<ErrorCode>();
 
@@ -122,7 +122,7 @@ public class VehicleService(
             errors.Add(ErrorCode.InvalidMakeId);
         }
 
-        if (year < FirstModelYear || year > DateTime.UtcNow.Year + 1)
+        if (year is not null && (year < FirstModelYear || year > DateTime.UtcNow.Year + 1))
         {
             errors.Add(ErrorCode.InvalidYear);
         }

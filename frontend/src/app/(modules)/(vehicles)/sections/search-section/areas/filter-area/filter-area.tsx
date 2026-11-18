@@ -74,19 +74,22 @@ export function FilterArea() {
         <div className={styles.field} data-tour="year">
           <BaseSelect<IYearOption>
             label="Model year"
-            placeholder="Pick a year"
+            placeholder="All years"
             items={yearOptions}
             optionLabel="label"
             optionValue="value"
             selectedItem={selectedYear}
             onChange={option => updateFilters({ year: option?.value ?? null })}
             disabled={!filters.makeId}
-            isRequired
             isClearable
           />
         </div>
       </div>
-      <BaseTypography text="Type 2 or more letters to find a make, then pick a model year." type="caption" color="muted" />
+      <BaseTypography
+        text="Pick a make, or type 2 or more letters to search all makes. The model year is optional."
+        type="caption"
+        color="muted"
+      />
     </div>
   );
 }

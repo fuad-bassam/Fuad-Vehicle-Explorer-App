@@ -24,15 +24,15 @@ export async function loadVehicleExplorer(filters: IVehicleFilters): Promise<IVe
   const [make, vehicleTypes, models] = await Promise.all([
     getMake(filters.makeId),
     getVehicleTypes(filters.makeId),
-    filters.year ? getModels(filters.makeId, filters.year, filters.vehicleType) : null
+    getModels(filters.makeId, filters.year, filters.vehicleType)
   ]);
 
-  const failed = [make, vehicleTypes, models].find(response => response && !response.isSuccessful);
+  const failed = [make, vehicleTypes, models].find(response => !response.isSuccessful);
 
   return {
     make: make.result,
     vehicleTypes: vehicleTypes.result ?? [],
-    models: models?.result ?? [],
+    models: models.result ?? [],
     makesPage: null,
     error: failed ? toError(failed) : null
   };
