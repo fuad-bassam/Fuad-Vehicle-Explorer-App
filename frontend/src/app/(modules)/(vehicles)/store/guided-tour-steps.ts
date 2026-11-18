@@ -6,7 +6,7 @@ export const guidedTourSteps: BaseGuidedTourStep[] = [
   {
     target: 'make',
     title: 'Find a make',
-    description: 'Type 2 or more letters, like "hon", then pick a make from the list.'
+    description: 'Pick a popular make, or type 2 or more letters, like "hon", to search all makes.'
   },
   {
     target: 'year',

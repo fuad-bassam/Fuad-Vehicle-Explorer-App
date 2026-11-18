@@ -6,6 +6,7 @@ import type { IMake } from '@/services/vehicles/models/make';
 import { BaseSelect } from '@/theme/components/base-select/base-select';
 import { BaseTypography } from '@/theme/components/base-typography/base-typography';
 import { useVehicleExplorerState } from '../../../../state-management/vehicle-explorer-state';
+import { popularMakes } from '../../../../store/popular-makes';
 import { minKeywordLength, typeMoreMessage } from '../../../../store/search-rules';
 import { buildYearOptions } from './helpers/year-options-helper';
 import type { IYearOption } from './models/year-option';
@@ -14,7 +15,7 @@ import styles from './filter-area.module.scss';
 export function FilterArea() {
   const { filters, selectedMake, updateFilters } = useVehicleExplorerState();
   const [yearOptions] = useState(() => buildYearOptions(new Date().getFullYear()));
-  const [makes, setMakes] = useState<IMake[]>([]);
+  const [makes, setMakes] = useState<IMake[]>(popularMakes);
   const [isSearching, setIsSearching] = useState(false);
   const [searchMessage, setSearchMessage] = useState(typeMoreMessage);
   const searchRequest = useRef<AbortController | null>(null);
@@ -26,7 +27,7 @@ export function FilterArea() {
     const keyword = text.trim();
 
     if (keyword.length < minKeywordLength) {
-      setMakes([]);
+      setMakes(popularMakes);
       setSearchMessage(typeMoreMessage);
       return;
     }
