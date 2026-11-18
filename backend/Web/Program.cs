@@ -1,6 +1,7 @@
 using Core.Enums;
 using Core.Settings;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using Services;
 using Web.Middlewares;
 
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddSerilog(logger => logger.ReadFrom.Configuration(builder.Configuration));
 builder.Services.AddServices(builder.Configuration);
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options => options.InvalidModelStateResponseFactory = _ =>
@@ -20,15 +22,12 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+app.UseSerilogRequestLogging();
 app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
-app.UseHttpsRedirection();
+app.MapOpenApi();
+app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "Vehicle Explorer API"));
 
 app.UseAuthorization();
 

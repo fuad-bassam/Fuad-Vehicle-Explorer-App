@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Integrations.Vpic;
 using Services.Vehicles;
+using StackExchange.Redis;
 
 namespace Services;
 
@@ -16,8 +17,21 @@ public static class Factory
         var vpicOptions = vpicSection.Get<VpicOptions>() ?? new VpicOptions();
 
         services.Configure<VpicOptions>(vpicSection);
-        services.AddMemoryCache();
-        services.AddHttpClient<IVpicClient, VpicClient>(client => client.BaseAddress = new Uri(vpicOptions.BaseUrl));
+        services.AddHybridCache();
+
+        var redisConnection = configuration.GetConnectionString("Redis");
+
+        if (!string.IsNullOrWhiteSpace(redisConnection))
+        {
+            var redisOptions = ConfigurationOptions.Parse(redisConnection);
+            redisOptions.AbortOnConnectFail = false;
+            redisOptions.BacklogPolicy = BacklogPolicy.FailFast;
+
+            services.AddStackExchangeRedisCache(options => options.ConfigurationOptions = redisOptions);
+        }
+
+        services.AddHttpClient<IVpicClient, VpicClient>(client => client.BaseAddress = new Uri(vpicOptions.BaseUrl))
+            .AddStandardResilienceHandler();
         services.AddScoped<IVehicleService, VehicleService>();
 
         return services;

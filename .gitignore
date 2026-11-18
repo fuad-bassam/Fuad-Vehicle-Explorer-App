@@ -23,3 +23,5 @@ next-env.d.ts
 *.tar.gz
 *.log
 .DS_Store
+
+frontend/AGENTS.md

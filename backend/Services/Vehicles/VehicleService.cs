@@ -4,15 +4,16 @@ using Core.Enums;
 using Core.Integrations.Vpic;
 using Core.Services.Vehicles;
 using Core.Settings;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Polly;
 
 namespace Services.Vehicles;
 
 public class VehicleService(
     IVpicClient vpicClient,
-    IMemoryCache cache,
+    HybridCache cache,
     IOptions<VpicOptions> options,
     ILogger<VehicleService> logger) : IVehicleService
 {
@@ -74,9 +75,9 @@ public class VehicleService(
             return ServiceOperationResult<List<VehicleTypeForList>>.Failure(ErrorCode.InvalidMakeId);
         }
 
-        return await CallVpicAsync(() => GetCachedAsync($"types:{makeId}", async () =>
+        return await CallVpicAsync(() => GetCachedAsync($"types:{makeId}", async token =>
         {
-            var vehicleTypes = await vpicClient.GetVehicleTypesAsync(makeId, cancellationToken);
+            var vehicleTypes = await vpicClient.GetVehicleTypesAsync(makeId, token);
 
             return vehicleTypes
                 .Where(type => !string.IsNullOrWhiteSpace(type.VehicleTypeName))
@@ -84,7 +85,7 @@ public class VehicleService(
                 .DistinctBy(type => type.Id)
                 .OrderBy(type => type.Name)
                 .ToList();
-        }), cancellationToken);
+        }, cancellationToken), cancellationToken);
     }
 
     public async Task<ServiceOperationResult<List<ModelForList>>> GetModelsAsync(int makeId, int year, string? vehicleType, CancellationToken cancellationToken)
@@ -108,9 +109,9 @@ public class VehicleService(
 
         vehicleType = string.IsNullOrWhiteSpace(vehicleType) ? null : vehicleType.Trim();
 
-        return await CallVpicAsync(() => GetCachedAsync($"models:{makeId}:{year}:{vehicleType?.ToLowerInvariant()}", async () =>
+        return await CallVpicAsync(() => GetCachedAsync($"models:{makeId}:{year}:{vehicleType?.ToLowerInvariant()}", async token =>
         {
-            var models = await vpicClient.GetModelsAsync(makeId, year, vehicleType, cancellationToken);
+            var models = await vpicClient.GetModelsAsync(makeId, year, vehicleType, token);
 
             return models
                 .Where(model => !string.IsNullOrWhiteSpace(model.ModelName))
@@ -118,29 +119,26 @@ public class VehicleService(
                 .DistinctBy(model => model.Id)
                 .OrderBy(model => model.Name)
                 .ToList();
-        }), cancellationToken);
+        }, cancellationToken), cancellationToken);
     }
 
     private Task<List<MakeForList>> GetAllMakesAsync(CancellationToken cancellationToken) =>
-        GetCachedAsync("makes", async () =>
+        GetCachedAsync("makes", async token =>
         {
-            var makes = await vpicClient.GetAllMakesAsync(cancellationToken);
+            var makes = await vpicClient.GetAllMakesAsync(token);
 
             return makes
                 .Where(make => !string.IsNullOrWhiteSpace(make.MakeName))
                 .Select(make => new MakeForList(make.MakeId, make.MakeName!.Trim()))
                 .ToList();
-        });
+        }, cancellationToken);
 
-    private async Task<List<T>> GetCachedAsync<T>(string key, Func<Task<List<T>>> load)
+    private async Task<List<T>> GetCachedAsync<T>(string key, Func<CancellationToken, Task<List<T>>> load, CancellationToken cancellationToken)
     {
-        var items = await cache.GetOrCreateAsync(key, entry =>
-        {
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(options.Value.CacheHours);
-            return load();
-        });
+        var cacheTime = TimeSpan.FromHours(options.Value.CacheHours);
+        var entryOptions = new HybridCacheEntryOptions { Expiration = cacheTime, LocalCacheExpiration = cacheTime };
 
-        return items ?? [];
+        return await cache.GetOrCreateAsync(key, async token => await load(token), entryOptions, cancellationToken: cancellationToken);
     }
 
     private async Task<ServiceOperationResult<T>> CallVpicAsync<T>(Func<Task<T>> call, CancellationToken cancellationToken)
@@ -160,6 +158,10 @@ public class VehicleService(
         catch (TaskCanceledException exception) when (!cancellationToken.IsCancellationRequested)
         {
             logger.LogWarning(exception, "vPIC request timed out");
+        }
+        catch (ExecutionRejectedException exception)
+        {
+            logger.LogWarning(exception, "vPIC calls are paused after too many failures or timeouts");
         }
 
         return ServiceOperationResult<T>.Failure(ErrorCode.UpstreamUnavailable);

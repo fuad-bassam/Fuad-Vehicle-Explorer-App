@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+coverage/
+.env
+.env.*
+!.env.example
+AGENTS.md
+next-env.d.ts
+*.tsbuildinfo
+Dockerfile
+.dockerignore
