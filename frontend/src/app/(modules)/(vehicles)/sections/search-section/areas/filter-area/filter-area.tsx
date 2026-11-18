@@ -55,7 +55,7 @@ export function FilterArea() {
   return (
     <div className={styles.area}>
       <div className={styles.fields}>
-        <div className={styles.field}>
+        <div className={styles.field} data-tour="make">
           <BaseSelect<IMake>
             label="Make"
             placeholder="Search makes, e.g. Honda"
@@ -69,7 +69,7 @@ export function FilterArea() {
             emptyMessage={searchMessage}
           />
         </div>
-        <div className={styles.field}>
+        <div className={styles.field} data-tour="year">
           <BaseSelect<IYearOption>
             label="Model year"
             placeholder="Pick a year"

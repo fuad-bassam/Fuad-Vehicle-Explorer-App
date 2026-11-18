@@ -18,7 +18,7 @@ export function TypesArea() {
   const hasNoTypes = !isLoadingMake && data.vehicleTypes.length === 0;
 
   return (
-    <div className={styles.area}>
+    <div className={styles.area} data-tour="types">
       <BaseTypography text={`Vehicle types for ${selectedMake.name}`} type="subtitle" />
       {hasNoTypes ? (
         <BaseTypography text="vPIC lists no vehicle types for this make." color="muted" />
