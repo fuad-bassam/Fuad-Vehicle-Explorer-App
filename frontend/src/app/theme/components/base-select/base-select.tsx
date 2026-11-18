@@ -12,6 +12,8 @@ export interface BaseSelectProps<T> {
   onChange: (item: T | null) => void;
   placeholder?: string;
   disabled?: boolean;
+  isRequired?: boolean;
+  isClearable?: boolean;
   onSearchChange?: (text: string) => void;
   isLoading?: boolean;
   emptyMessage?: string;
@@ -26,6 +28,8 @@ export function BaseSelect<T>({
   onChange,
   placeholder,
   disabled,
+  isRequired,
+  isClearable,
   onSearchChange,
   isLoading,
   emptyMessage
@@ -41,6 +45,8 @@ export function BaseSelect<T>({
       label={label}
       placeholder={placeholder}
       disabled={disabled}
+      withAsterisk={isRequired}
+      clearable={isClearable}
       data={options.map(item => ({ value: String(item[optionValue]), label: String(item[optionLabel]) }))}
       value={selectedItem ? String(selectedItem[optionValue]) : null}
       onChange={value => onChange(options.find(item => String(item[optionValue]) === value) ?? null)}

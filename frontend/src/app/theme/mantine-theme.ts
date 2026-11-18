@@ -31,5 +31,6 @@ export const mantineTheme = createTheme({
   primaryShade: { light: 6, dark: 6 },
   colors: { primary, dark: neutralDark },
   defaultRadius: 'md',
+  cursorType: 'pointer',
   fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif'
 });

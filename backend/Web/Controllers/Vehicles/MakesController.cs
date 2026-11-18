@@ -1,3 +1,4 @@
+using Core.DTOs;
 using Core.DTOs.Vehicles;
 using Core.Enums;
 using Core.Services.Vehicles;
@@ -19,6 +20,13 @@ public class MakesController(IVehicleService vehicleService) : ControllerBase
         return ToResponse(result);
     }
 
+    [HttpGet("all")]
+    public async Task<ActionResult<ServiceOperationResult<PagedList<MakeForList>>>> GetAllAsync(int page = 1, int pageSize = 20, CancellationToken cancellationToken = default)
+    {
+        var result = await vehicleService.GetMakesPageAsync(page, pageSize, cancellationToken);
+        return ToResponse(result);
+    }
+
     [HttpGet("{makeId}")]
     public async Task<ActionResult<ServiceOperationResult<MakeForList>>> GetMakeAsync(int makeId, CancellationToken cancellationToken)
     {
@@ -34,7 +42,7 @@ public class MakesController(IVehicleService vehicleService) : ControllerBase
     }
 
     [HttpGet("{makeId}/models")]
-    public async Task<ActionResult<ServiceOperationResult<List<ModelForList>>>> GetModelsAsync(int makeId, int year, string? vehicleType, CancellationToken cancellationToken)
+    public async Task<ActionResult<ServiceOperationResult<List<ModelForList>>>> GetModelsAsync(int makeId, int? year, string? vehicleType, CancellationToken cancellationToken)
     {
         var result = await vehicleService.GetModelsAsync(makeId, year, vehicleType, cancellationToken);
         return ToResponse(result);

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Button } from '@mantine/core';
 
 export interface BaseButtonProps {
@@ -7,6 +8,7 @@ export interface BaseButtonProps {
   variant?: 'primary' | 'secondary';
   disabled?: boolean;
   isLoading?: boolean;
+  href?: string;
   onClick?: () => void;
 }
 
@@ -18,15 +20,24 @@ const primaryColors = {
   }
 };
 
-export function BaseButton({ label, variant = 'primary', disabled, isLoading, onClick }: BaseButtonProps) {
+export function BaseButton({ label, variant = 'primary', disabled, isLoading, href, onClick }: BaseButtonProps) {
+  const look = {
+    variant: variant === 'primary' ? 'filled' : 'outline',
+    vars: variant === 'primary' ? () => primaryColors : undefined,
+    disabled,
+    loading: isLoading
+  };
+
+  if (href) {
+    return (
+      <Button {...look} component={Link} href={href}>
+        {label}
+      </Button>
+    );
+  }
+
   return (
-    <Button
-      variant={variant === 'primary' ? 'filled' : 'outline'}
-      vars={variant === 'primary' ? () => primaryColors : undefined}
-      disabled={disabled}
-      loading={isLoading}
-      onClick={onClick}
-    >
+    <Button {...look} onClick={onClick}>
       {label}
     </Button>
   );

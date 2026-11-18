@@ -1,30 +1,18 @@
-const describeSearch = (makeName: string, year: number, vehicleType: string | null) =>
-  `${vehicleType ? `${vehicleType} ` : ''}models for ${makeName} ${year}`;
+const describeSearch = (makeName: string, year: number | null, vehicleType: string | null) =>
+  `${vehicleType ? `${vehicleType} ` : ''}models for ${makeName} ${year ?? '(all years)'}`;
 
 export const buildModelsTitle = (
   shownCount: number,
   totalCount: number,
   makeName: string,
-  year: number,
+  year: number | null,
   vehicleType: string | null
 ) => {
   const count = shownCount === totalCount ? `${totalCount}` : `${shownCount} of ${totalCount}`;
   return `${count} ${describeSearch(makeName, year, vehicleType)}`;
 };
 
-export const buildNoModelsTitle = (makeName: string, year: number, vehicleType: string | null) =>
+export const buildNoModelsTitle = (makeName: string, year: number | null, vehicleType: string | null) =>
   `No ${describeSearch(makeName, year, vehicleType)}`;
 
 export const buildNoMatchTitle = (filterText: string) => `No models match "${filterText.trim()}"`;
-
-export const buildPromptTitle = (hasMake: boolean, hasYear: boolean) => {
-  if (hasMake && !hasYear) {
-    return 'Now pick a model year';
-  }
-
-  if (!hasMake && hasYear) {
-    return 'Now pick a make';
-  }
-
-  return 'Pick a make and a model year';
-};

@@ -28,7 +28,7 @@ public class FakeVpicClient : IVpicClient
         return Task.FromResult(VehicleTypes);
     }
 
-    public Task<List<VpicModel>> GetModelsAsync(int makeId, int year, string? vehicleType, CancellationToken cancellationToken)
+    public Task<List<VpicModel>> GetModelsAsync(int makeId, int? year, string? vehicleType, CancellationToken cancellationToken)
     {
         ThrowIfNeeded();
         return Task.FromResult(Models);

@@ -1,11 +1,14 @@
-@use '../../styles/layout' as *;
+.small {
+  width: 16px;
+  height: 16px;
+}
 
 .medium {
-  @include auto-spacing('width', 20);
-  @include auto-spacing('height', 20);
+  width: 20px;
+  height: 20px;
 }
 
 .large {
-  @include auto-spacing('width', 28);
-  @include auto-spacing('height', 28);
+  width: 24px;
+  height: 24px;
 }

@@ -6,12 +6,12 @@ export const guidedTourSteps: BaseGuidedTourStep[] = [
   {
     target: 'make',
     title: 'Find a make',
-    description: 'Type 2 or more letters, like "hon", then pick a make from the list.'
+    description: 'Pick a popular make, or type 2 or more letters, like "hon", to search all makes.'
   },
   {
     target: 'year',
     title: 'Pick a model year',
-    description: 'Pick the year you want. vPIC has models from 1981.'
+    description: 'Optional: pick a year to narrow the models. vPIC has models from 1981.'
   },
   {
     target: 'types',

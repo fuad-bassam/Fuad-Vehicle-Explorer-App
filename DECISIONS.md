@@ -41,9 +41,15 @@ I used the same layering I use at work, just smaller.
 - **Rate limit:** 100 calls a minute per user, then 429.
 - **Swagger and Serilog:** to try the API and to read the logs.
 - **Guided tour:** driver.js. It shows on the first visit, and the button at the bottom right plays it again.
+- **All years:** with a make but no year, the list shows the make's models from all years. This uses one more vPIC endpoint, `GetModelsForMakeId`.
+- **All makes:** the first screen lists every make, 20 per page, so the page is never empty.
 
 ## Trade-offs
 - Filter and sort run in the browser, because vPIC can't do them.
 
 ## How I used AI
 I used Claude Code. First I gave it the context: my architecture for the backend and frontend, the assignment and what I knew about the vPIC API. With that, it helped me write the code one task at a time, and I reviewed and pushed each task myself. At the end I ran my checklist slash commands to check the code against my rules.
+
+What it got wrong:
+- **Over-built the first version**
+- **Wrong fix for the deploy key**

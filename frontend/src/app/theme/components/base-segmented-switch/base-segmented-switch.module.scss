@@ -1,0 +1,7 @@
+@use '../../styles/layout' as *;
+
+.label {
+  @include auto-spacing('gap', 6);
+  display: inline-flex;
+  align-items: center;
+}

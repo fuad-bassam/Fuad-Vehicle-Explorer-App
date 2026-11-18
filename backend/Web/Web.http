@@ -9,6 +9,11 @@ Accept: application/json
 
 ###
 
+GET {{Web_HostAddress}}/api/makes/all?page=1&pageSize=20
+Accept: application/json
+
+###
+
 GET {{Web_HostAddress}}/api/makes/474
 Accept: application/json
 
