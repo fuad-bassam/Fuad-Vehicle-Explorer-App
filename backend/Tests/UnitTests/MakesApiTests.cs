@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
+using Core.DTOs;
 using Core.DTOs.Vehicles;
 using Core.Enums;
 using Core.Integrations.Vpic;
@@ -42,6 +43,17 @@ public class MakesApiTests : IDisposable
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal(new MakeForList(474, "HONDA"), body!.Result);
+    }
+
+    [Fact]
+    public async Task GetAll_ReturnsTheFirstPage()
+    {
+        var response = await _client.GetAsync("/api/makes/all?page=1&pageSize=20");
+        var body = await response.Content.ReadFromJsonAsync<ServiceOperationResult<PagedList<MakeForList>>>();
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal([new MakeForList(474, "HONDA")], body!.Result!.Items);
+        Assert.Equal(1, body.Result.TotalCount);
     }
 
     [Fact]

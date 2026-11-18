@@ -64,6 +64,30 @@ public class VehicleServiceTests
     }
 
     [Fact]
+    public async Task GetMakesPage_ReturnsThePageSortedByName()
+    {
+        _vpicClient.Makes =
+        [
+            new VpicMake { MakeId = 474, MakeName = "HONDA" },
+            new VpicMake { MakeId = 475, MakeName = "ACURA" },
+            new VpicMake { MakeId = 448, MakeName = "TOYOTA" }
+        ];
+
+        var result = await _service.GetMakesPageAsync(2, 2, CancellationToken.None);
+
+        Assert.Equal(["TOYOTA"], result.Result!.Items.Select(make => make.Name));
+        Assert.Equal(3, result.Result.TotalCount);
+    }
+
+    [Fact]
+    public async Task GetMakesPage_WithPageZero_ReturnsInvalidPage()
+    {
+        var result = await _service.GetMakesPageAsync(0, 20, CancellationToken.None);
+
+        Assert.Equal([ErrorCode.InvalidPage], result.ErrorCodes);
+    }
+
+    [Fact]
     public async Task GetMake_WithUnknownId_ReturnsMakeNotFound()
     {
         _vpicClient.Makes = [new VpicMake { MakeId = 474, MakeName = "HONDA" }];
