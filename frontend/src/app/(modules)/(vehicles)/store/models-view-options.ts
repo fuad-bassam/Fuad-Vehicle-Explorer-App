@@ -1,9 +1,11 @@
-export const viewOptions = [
-  { label: 'Table', value: 'table' },
-  { label: 'Grid', value: 'grid' }
+import type { BaseSegmentedSwitchOption } from '@/theme/components/base-segmented-switch/base-segmented-switch';
+
+export const viewOptions: BaseSegmentedSwitchOption[] = [
+  { label: 'Table', value: 'table', icon: 'table' },
+  { label: 'Grid', value: 'grid', icon: 'layout-grid' }
 ];
 
-export const sortOptions = [
+export const sortOptions: BaseSegmentedSwitchOption[] = [
   { label: 'A–Z', value: 'asc' },
   { label: 'Z–A', value: 'desc' }
 ];

@@ -1,17 +1,19 @@
-import { IconMessageQuestion, IconMoon, IconSun } from '@tabler/icons-react';
+import { IconLayoutGrid, IconMessageQuestion, IconMoon, IconSun, IconTable } from '@tabler/icons-react';
 import styles from './base-icon.module.scss';
 
 const icons = {
+  'layout-grid': IconLayoutGrid,
   'message-question': IconMessageQuestion,
   moon: IconMoon,
-  sun: IconSun
+  sun: IconSun,
+  table: IconTable
 };
 
 export type BaseIconName = keyof typeof icons;
 
 export interface BaseIconProps {
   name: BaseIconName;
-  size?: 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large';
 }
 
 export function BaseIcon({ name, size = 'medium' }: BaseIconProps) {
