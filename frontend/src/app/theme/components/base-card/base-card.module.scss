@@ -1,0 +1,13 @@
+@use '../../styles/layout' as *;
+
+.card {
+  @include auto-spacing('padding', 20);
+}
+
+.default {
+  background-color: var(--Background-Base-Secondary-Default);
+}
+
+.subtle {
+  background-color: var(--Background-Base-Secondary-Hover);
+}

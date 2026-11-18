@@ -1,0 +1,30 @@
+@Web_HostAddress = http://localhost:5080
+
+GET {{Web_HostAddress}}/health
+
+###
+
+GET {{Web_HostAddress}}/api/makes?keyword=hon
+Accept: application/json
+
+###
+
+GET {{Web_HostAddress}}/api/makes/474
+Accept: application/json
+
+###
+
+GET {{Web_HostAddress}}/api/makes/474/vehicle-types
+Accept: application/json
+
+###
+
+GET {{Web_HostAddress}}/api/makes/474/models?year=2015&vehicleType=Passenger%20Car
+Accept: application/json
+
+###
+
+GET {{Web_HostAddress}}/api/makes/474/models?year=1980
+Accept: application/json
+
+###

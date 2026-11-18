@@ -1,0 +1,9 @@
+@use 'variables/primitives';
+@use 'variables/color-mode/light';
+@use 'variables/color-mode/dark';
+
+body {
+  margin: 0;
+  background-color: var(--Background-Base-Primary);
+  color: var(--Text-High-emphasis);
+}

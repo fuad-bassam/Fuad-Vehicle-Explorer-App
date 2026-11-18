@@ -1,0 +1,75 @@
+@use '../../styles/layout' as *;
+@use '../../styles/font-styles' as *;
+
+.floating {
+  @include auto-spacing('right', 24);
+  @include auto-spacing('bottom', 24);
+  position: fixed;
+  z-index: 100;
+}
+
+.popover:global(.driver-popover) {
+  --driver-popover-font-family: var(--mantine-font-family);
+  @include auto-spacing('padding', 16);
+  @include auto-spacing('border-radius', 12);
+  color: var(--Text-High-emphasis);
+  background-color: var(--Background-Base-Secondary-Default);
+
+  :global(.driver-popover-title) {
+    @include font-size('title', 'medium');
+  }
+
+  :global(.driver-popover-description) {
+    @include font-size('body', 'medium');
+    color: var(--Text-Medium-emphasis);
+  }
+
+  :global(.driver-popover-progress-text) {
+    @include font-size('label', 'medium');
+    color: var(--Text-Low-emphasis);
+  }
+
+  :global(.driver-popover-close-btn) {
+    color: var(--Text-Low-emphasis);
+  }
+
+  :global(.driver-popover-footer-btn) {
+    @include font-size('label', 'large');
+    @include auto-spacing('padding-block', 6);
+    @include auto-spacing('padding-inline', 12);
+    @include auto-spacing('border-radius', 8);
+    color: var(--Text-High-emphasis);
+    background-color: var(--Background-Base-Secondary-Default);
+    border-color: var(--Border-Medium-emphasis);
+  }
+
+  :global(.driver-popover-footer-btn:hover) {
+    background-color: var(--Background-Base-Secondary-Hover);
+  }
+
+  :global(.driver-popover-next-btn) {
+    color: var(--Text-Fixed-White-High-emphasis);
+    background-color: var(--Background-Primary-Default);
+    border-color: var(--Background-Primary-Default);
+  }
+
+  :global(.driver-popover-next-btn:hover) {
+    background-color: var(--Background-Primary-Hover);
+  }
+
+  :global(.driver-popover-arrow-side-left) {
+    border-left-color: var(--Background-Base-Secondary-Default);
+  }
+
+  :global(.driver-popover-arrow-side-right) {
+    border-right-color: var(--Background-Base-Secondary-Default);
+  }
+
+  :global(.driver-popover-arrow-side-top) {
+    border-top-color: var(--Background-Base-Secondary-Default);
+  }
+
+  :global(.driver-popover-arrow-side-bottom) {
+    border-bottom-color: var(--Background-Base-Secondary-Default);
+  }
+}

@@ -1,0 +1,32 @@
+@use '../../../../../../theme/styles/layout' as *;
+
+.area {
+  @include auto-spacing('gap', 16);
+  display: flex;
+  flex-direction: column;
+}
+
+.toolbar {
+  @include auto-spacing('gap', 12);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.filter {
+  flex: 1 1 auto-spacing-value(220);
+  min-width: 0;
+}
+
+.noMatch {
+  @include auto-spacing('padding-bottom', 16);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.grid {
+  @include auto-spacing('gap', 16);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(auto-spacing-value(260), 1fr));
+}

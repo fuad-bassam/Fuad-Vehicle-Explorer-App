@@ -1,0 +1,27 @@
+@use '../../theme/styles/layout' as *;
+
+.header {
+  background-color: var(--Background-Base-Secondary-Default);
+  box-shadow: var(--mantine-shadow-xs);
+}
+
+.headerContent {
+  @include auto-spacing('max-width', 1100);
+  @include auto-spacing('padding-block', 16);
+  @include auto-spacing('padding-inline', 24);
+  @include auto-spacing('gap', 16);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-inline: auto;
+}
+
+.main {
+  @include auto-spacing('max-width', 1100);
+  @include auto-spacing('padding', 24);
+  @include auto-spacing('padding-bottom', 96);
+  @include auto-spacing('gap', 24);
+  display: flex;
+  flex-direction: column;
+  margin-inline: auto;
+}

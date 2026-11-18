@@ -1,0 +1,31 @@
+@use '../../styles/font-styles' as *;
+
+.text {
+  margin: 0;
+}
+
+.title {
+  @include font-size('title', 'large');
+  font-weight: 700;
+}
+
+.subtitle {
+  @include font-size('title', 'medium');
+  font-weight: 700;
+}
+
+.body {
+  @include font-size('body', 'medium');
+}
+
+.caption {
+  @include font-size('label', 'large');
+}
+
+.default {
+  color: var(--Text-High-emphasis);
+}
+
+.muted {
+  color: var(--Text-Medium-emphasis);
+}
