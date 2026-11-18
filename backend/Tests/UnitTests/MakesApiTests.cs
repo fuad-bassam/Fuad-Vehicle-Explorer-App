@@ -87,4 +87,24 @@ public class MakesApiTests : IDisposable
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         Assert.Equal([ErrorCode.Unexpected], body!.ErrorCodes);
     }
+
+    [Fact]
+    public async Task GetMake_OverTheLimit_ReturnsTooManyRequests()
+    {
+        using var factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
+        {
+            builder.UseSetting("RateLimiting:PermitLimit", "2");
+            builder.ConfigureTestServices(services => services.AddSingleton<IVpicClient>(_vpicClient));
+        });
+        using var client = factory.CreateClient();
+
+        await client.GetAsync("/api/makes/474");
+        await client.GetAsync("/api/makes/474");
+        var response = await client.GetAsync("/api/makes/474");
+        var body = await response.Content.ReadFromJsonAsync<ServiceOperationResult<object>>();
+
+        Assert.Equal(HttpStatusCode.TooManyRequests, response.StatusCode);
+        Assert.Equal([ErrorCode.RateLimited], body!.ErrorCodes);
+        Assert.NotNull(response.Headers.RetryAfter);
+    }
 }

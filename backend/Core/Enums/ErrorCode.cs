@@ -11,5 +11,6 @@ public enum ErrorCode
     KeywordTooShort,
     MakeNotFound,
     UpstreamUnavailable,
+    RateLimited,
     Unexpected
 }
