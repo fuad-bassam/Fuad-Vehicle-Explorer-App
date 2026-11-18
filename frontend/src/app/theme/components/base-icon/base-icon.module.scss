@@ -1,0 +1,11 @@
+@use '../../styles/layout' as *;
+
+.medium {
+  @include auto-spacing('width', 20);
+  @include auto-spacing('height', 20);
+}
+
+.large {
+  @include auto-spacing('width', 28);
+  @include auto-spacing('height', 28);
+}
