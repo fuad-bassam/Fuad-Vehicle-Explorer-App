@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Core.DTOs;
 using Core.DTOs.Vehicles;
 using Core.Enums;
 using Core.Integrations.Vpic;
@@ -20,6 +21,7 @@ public class VehicleService(
     private const int FirstModelYear = 1981;
     private const int MinKeywordLength = 2;
     private const int MaxSearchResults = 50;
+    private const int MaxPageSize = 100;
 
     public async Task<ServiceOperationResult<List<MakeForList>>> SearchMakesAsync(string? keyword, CancellationToken cancellationToken)
     {
@@ -45,6 +47,29 @@ public class VehicleService(
             .ToList();
 
         return ServiceOperationResult<List<MakeForList>>.Success(matches);
+    }
+
+    public async Task<ServiceOperationResult<PagedList<MakeForList>>> GetMakesPageAsync(int page, int pageSize, CancellationToken cancellationToken)
+    {
+        if (page < 1 || pageSize < 1 || pageSize > MaxPageSize)
+        {
+            return ServiceOperationResult<PagedList<MakeForList>>.Failure(ErrorCode.InvalidPage);
+        }
+
+        var makes = await CallVpicAsync(() => GetAllMakesAsync(cancellationToken), cancellationToken);
+
+        if (!makes.IsSuccessful)
+        {
+            return ServiceOperationResult<PagedList<MakeForList>>.Failure([.. makes.ErrorCodes]);
+        }
+
+        var items = makes.Result!
+            .OrderBy(make => make.Name, StringComparer.OrdinalIgnoreCase)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        return ServiceOperationResult<PagedList<MakeForList>>.Success(new PagedList<MakeForList>(items, page, pageSize, makes.Result!.Count));
     }
 
     public async Task<ServiceOperationResult<MakeForList>> GetMakeAsync(int makeId, CancellationToken cancellationToken)
@@ -88,7 +113,7 @@ public class VehicleService(
         }, cancellationToken), cancellationToken);
     }
 
-    public async Task<ServiceOperationResult<List<ModelForList>>> GetModelsAsync(int makeId, int year, string? vehicleType, CancellationToken cancellationToken)
+    public async Task<ServiceOperationResult<List<ModelForList>>> GetModelsAsync(int makeId, int? year, string? vehicleType, CancellationToken cancellationToken)
     {
         var errors = new List<ErrorCode>();
 
@@ -97,7 +122,7 @@ public class VehicleService(
             errors.Add(ErrorCode.InvalidMakeId);
         }
 
-        if (year < FirstModelYear || year > DateTime.UtcNow.Year + 1)
+        if (year is not null && (year < FirstModelYear || year > DateTime.UtcNow.Year + 1))
         {
             errors.Add(ErrorCode.InvalidYear);
         }

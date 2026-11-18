@@ -1,0 +1,21 @@
+@use '../../../../../../theme/styles/layout' as *;
+
+.area {
+  @include auto-spacing('gap', 12);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  @include auto-spacing('gap', 12);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.grid {
+  @include auto-spacing('gap', 16);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(auto-spacing-value(260), 1fr));
+}

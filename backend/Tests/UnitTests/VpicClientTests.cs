@@ -31,4 +31,26 @@ public class VpicClientTests
             $"{BaseUrl}GetModelsForMakeIdYear/makeId/474/modelyear/2015/vehicletype/Multipurpose%20Passenger%20Vehicle%20%28MPV%29?format=json",
             handler.LastRequestUri!.AbsoluteUri);
     }
+
+    [Fact]
+    public async Task GetModels_WithoutYearOrType_UsesTheAllYearsUrl()
+    {
+        var handler = new StubHttpMessageHandler("""{"Count":0,"Results":[]}""");
+        var client = new VpicClient(new HttpClient(handler) { BaseAddress = new Uri(BaseUrl) });
+
+        await client.GetModelsAsync(474, null, null, CancellationToken.None);
+
+        Assert.Equal($"{BaseUrl}GetModelsForMakeId/474?format=json", handler.LastRequestUri!.AbsoluteUri);
+    }
+
+    [Fact]
+    public async Task GetModels_WithTypeButNoYear_SkipsTheYearInTheUrl()
+    {
+        var handler = new StubHttpMessageHandler("""{"Count":0,"Results":[]}""");
+        var client = new VpicClient(new HttpClient(handler) { BaseAddress = new Uri(BaseUrl) });
+
+        await client.GetModelsAsync(474, null, "Truck", CancellationToken.None);
+
+        Assert.Equal($"{BaseUrl}GetModelsForMakeIdYear/makeId/474/vehicletype/Truck?format=json", handler.LastRequestUri!.AbsoluteUri);
+    }
 }

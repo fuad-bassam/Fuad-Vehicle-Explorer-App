@@ -4,16 +4,19 @@ import { BaseAlert } from '@/theme/components/base-alert/base-alert';
 import { BaseButton } from '@/theme/components/base-button/base-button';
 import { BaseCard } from '@/theme/components/base-card/base-card';
 import { BaseEmptyState } from '@/theme/components/base-empty-state/base-empty-state';
+import { BasePagination } from '@/theme/components/base-pagination/base-pagination';
 import { BaseSegmentedSwitch } from '@/theme/components/base-segmented-switch/base-segmented-switch';
 import { BaseTable } from '@/theme/components/base-table/base-table';
 import { BaseTextInput } from '@/theme/components/base-text-input/base-text-input';
 import { BaseTypography } from '@/theme/components/base-typography/base-typography';
+import { takePage, toPageCount } from '../../../../helpers/paging-helper';
 import { useVehicleExplorerState } from '../../../../state-management/vehicle-explorer-state';
 import { loadingCardCount, sortOptions, viewOptions } from '../../../../store/models-view-options';
 import { modelsTableColumns } from '../../../../store/models-table-columns';
+import { pageSize } from '../../../../store/paging-options';
 import { ModelCard } from './components/model-card/model-card';
 import { filterAndSortModels } from './helpers/models-list-helper';
-import { buildModelsTitle, buildNoMatchTitle, buildNoModelsTitle, buildPromptTitle } from './helpers/models-summary-helper';
+import { buildModelsTitle, buildNoMatchTitle, buildNoModelsTitle } from './helpers/models-summary-helper';
 import styles from './models-area.module.scss';
 
 export function ModelsArea() {
@@ -25,11 +28,17 @@ export function ModelsArea() {
     viewMode,
     sortDirection,
     filterText,
+    modelsPage,
     changeViewMode,
     changeSortDirection,
     changeFilterText,
+    changeModelsPage,
     retry
   } = useVehicleExplorerState();
+
+  if (!filters.makeId) {
+    return null;
+  }
 
   if (data.error && !isLoading) {
     const isError = data.error.type === 'error';
@@ -45,13 +54,8 @@ export function ModelsArea() {
     );
   }
 
-  if (!filters.makeId || !filters.year || !selectedMake) {
-    return (
-      <BaseEmptyState
-        title={buildPromptTitle(Boolean(filters.makeId), Boolean(filters.year))}
-        description="Matching vehicle models will appear here."
-      />
-    );
+  if (!selectedMake) {
+    return null;
   }
 
   const year = filters.year;
@@ -66,6 +70,7 @@ export function ModelsArea() {
   }
 
   const shownModels = filterAndSortModels(data.models, filterText, sortDirection);
+  const pageModels = takePage(shownModels, modelsPage, pageSize);
   const hasNoMatch = !isLoading && shownModels.length === 0;
 
   return (
@@ -106,13 +111,13 @@ export function ModelsArea() {
         </div>
       )}
       {!hasNoMatch && viewMode === 'table' && (
-        <BaseTable columns={modelsTableColumns} rows={shownModels} rowKey="id" isLoading={isLoading} />
+        <BaseTable columns={modelsTableColumns} rows={pageModels} rowKey="id" isLoading={isLoading} />
       )}
       {!hasNoMatch && viewMode === 'grid' && (
         <div className={styles.grid}>
           {isLoading
             ? Array.from({ length: loadingCardCount }, (_, index) => <BaseCard key={index} variant="subtle" isLoading />)
-            : shownModels.map(model => (
+            : pageModels.map(model => (
                 <ModelCard
                   key={model.id}
                   model={model}
@@ -122,6 +127,14 @@ export function ModelsArea() {
                 />
               ))}
         </div>
+      )}
+      {!hasNoMatch && (
+        <BasePagination
+          page={modelsPage}
+          totalPages={toPageCount(shownModels.length, pageSize)}
+          onChange={changeModelsPage}
+          disabled={isLoading}
+        />
       )}
     </div>
   );

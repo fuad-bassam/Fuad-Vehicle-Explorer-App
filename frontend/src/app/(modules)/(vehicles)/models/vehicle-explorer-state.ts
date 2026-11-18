@@ -17,10 +17,12 @@ export interface IVehicleExplorerState {
   viewMode: ViewMode;
   sortDirection: SortDirection;
   filterText: string;
+  modelsPage: number;
   updateFilters: (changes: Partial<IVehicleFilters>, make?: IMake | null) => void;
   changeViewMode: (viewMode: ViewMode) => void;
   changeSortDirection: (sortDirection: SortDirection) => void;
   changeFilterText: (filterText: string) => void;
+  changeModelsPage: (page: number) => void;
   retry: () => void;
 }
 

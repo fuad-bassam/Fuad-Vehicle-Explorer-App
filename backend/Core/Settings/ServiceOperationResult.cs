@@ -23,6 +23,7 @@ public class ServiceOperationResult<T>
         ErrorCode.InvalidYear => "Model year must be between 1981 and next year.",
         ErrorCode.KeywordTooShort => "Type at least 2 characters to search for a make.",
         ErrorCode.MakeNotFound => "Make was not found.",
+        ErrorCode.InvalidPage => "Page must be 1 or more, and page size between 1 and 100.",
         ErrorCode.UpstreamUnavailable => "The vehicle data service is not available right now. Please try again shortly.",
         ErrorCode.RateLimited => "Too many requests. Please wait a few seconds and try again.",
         _ => "Something went wrong."

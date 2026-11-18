@@ -10,6 +10,7 @@ public enum ErrorCode
     InvalidYear,
     KeywordTooShort,
     MakeNotFound,
+    InvalidPage,
     UpstreamUnavailable,
     RateLimited,
     Unexpected

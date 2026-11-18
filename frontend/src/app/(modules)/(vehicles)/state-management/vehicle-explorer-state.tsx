@@ -22,10 +22,12 @@ export function VehicleExplorerStateProvider({ filters, viewMode: initialViewMod
   const [viewMode, setViewMode] = useState<ViewMode>(initialViewMode);
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [filterText, setFilterText] = useState('');
+  const [modelsPage, setModelsPage] = useState(1);
 
   const updateFilters = (changes: Partial<IVehicleFilters>, make?: IMake | null) => {
-    const nextFilters = { ...selection.filters, ...changes };
+    const nextFilters = { ...selection.filters, page: 1, ...changes };
     setFilterText('');
+    setModelsPage(1);
 
     startTransition(() => {
       setSelection({ filters: nextFilters, make: make === undefined ? selection.make : make });
@@ -38,6 +40,16 @@ export function VehicleExplorerStateProvider({ filters, viewMode: initialViewMod
     window.history.replaceState(null, '', `${pathname}${toQueryString(selection.filters, nextViewMode)}`);
   };
 
+  const changeSortDirection = (nextSortDirection: SortDirection) => {
+    setSortDirection(nextSortDirection);
+    setModelsPage(1);
+  };
+
+  const changeFilterText = (nextFilterText: string) => {
+    setFilterText(nextFilterText);
+    setModelsPage(1);
+  };
+
   const retry = () => startTransition(() => router.refresh());
 
   const state: IVehicleExplorerState = {
@@ -48,10 +60,12 @@ export function VehicleExplorerStateProvider({ filters, viewMode: initialViewMod
     viewMode,
     sortDirection,
     filterText,
+    modelsPage,
     updateFilters,
     changeViewMode,
-    changeSortDirection: setSortDirection,
-    changeFilterText: setFilterText,
+    changeSortDirection,
+    changeFilterText,
+    changeModelsPage: setModelsPage,
     retry
   };
 
