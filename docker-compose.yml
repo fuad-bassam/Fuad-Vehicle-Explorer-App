@@ -5,8 +5,11 @@ services:
       context: ./backend
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__Redis: redis:6379
     ports:
       - "${API_PORT:-5080}:8080"
+    depends_on:
+      - redis
     restart: unless-stopped
 
   web:
@@ -19,4 +22,8 @@ services:
       - "${WEB_PORT:-3000}:3000"
     depends_on:
       - api
+    restart: unless-stopped
+
+  redis:
+    image: redis:8-alpine
     restart: unless-stopped
