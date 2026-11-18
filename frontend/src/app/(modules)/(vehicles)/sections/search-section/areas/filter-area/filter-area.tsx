@@ -63,8 +63,10 @@ export function FilterArea() {
             optionLabel="name"
             optionValue="id"
             selectedItem={selectedMake}
-            onChange={make => updateFilters({ makeId: make?.id ?? null, vehicleType: null }, make)}
+            onChange={make => updateFilters({ makeId: make?.id ?? null, year: make ? filters.year : null, vehicleType: null }, make)}
             onSearchChange={searchMakes}
+            isRequired
+            isClearable
             isLoading={isSearching}
             emptyMessage={searchMessage}
           />
@@ -78,6 +80,9 @@ export function FilterArea() {
             optionValue="value"
             selectedItem={selectedYear}
             onChange={option => updateFilters({ year: option?.value ?? null })}
+            disabled={!filters.makeId}
+            isRequired
+            isClearable
           />
         </div>
       </div>
