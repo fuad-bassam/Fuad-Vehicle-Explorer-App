@@ -3,11 +3,13 @@ using Core.Enums;
 using Core.Services.Vehicles;
 using Core.Settings;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Web.Controllers.Vehicles;
 
 [ApiController]
 [Route("api/makes")]
+[EnableRateLimiting(RateLimitOptions.PolicyName)]
 public class MakesController(IVehicleService vehicleService) : ControllerBase
 {
     [HttpGet]

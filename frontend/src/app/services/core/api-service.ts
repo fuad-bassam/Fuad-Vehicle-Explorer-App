@@ -1,3 +1,4 @@
+import { headers } from 'next/headers';
 import type { ApiQuery } from './models/api-query';
 import type { IApiResponse, IServiceOperationResult } from './models/service-operation-result';
 
@@ -19,7 +20,8 @@ export async function apiGet<T>(path: string, query: ApiQuery = {}): Promise<IAp
       }
     });
 
-    const response = await fetch(url, { cache: 'no-store' });
+    const clientIp = (await headers()).get('x-forwarded-for');
+    const response = await fetch(url, { cache: 'no-store', headers: clientIp ? { 'X-Forwarded-For': clientIp } : {} });
     const body = (await response.json()) as IServiceOperationResult<T>;
 
     return { ...body, status: response.status };

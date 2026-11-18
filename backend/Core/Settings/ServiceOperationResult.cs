@@ -24,6 +24,7 @@ public class ServiceOperationResult<T>
         ErrorCode.KeywordTooShort => "Type at least 2 characters to search for a make.",
         ErrorCode.MakeNotFound => "Make was not found.",
         ErrorCode.UpstreamUnavailable => "The vehicle data service is not available right now. Please try again shortly.",
+        ErrorCode.RateLimited => "Too many requests. Please wait a few seconds and try again.",
         _ => "Something went wrong."
     };
 }
