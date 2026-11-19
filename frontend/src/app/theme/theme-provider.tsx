@@ -7,12 +7,12 @@ import { mantineTheme } from './mantine-theme';
 export const themeHtmlProps = mantineHtmlProps;
 
 export function ThemeHead() {
-  return <ColorSchemeScript defaultColorScheme="light" />;
+  return <ColorSchemeScript defaultColorScheme="dark" />;
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   return (
-    <MantineProvider theme={mantineTheme} defaultColorScheme="light">
+    <MantineProvider theme={mantineTheme} defaultColorScheme="dark">
       {children}
     </MantineProvider>
   );
